@@ -1,0 +1,35 @@
+syntax = "proto3";
+package example;
+
+enum Status {
+  SUCCESS = 0;
+  FAIL = 1;
+  UNKNOWN = 2;
+}
+
+message getExampleDataReq {
+  int32 id_get = 1;
+  string name_get = 2;
+}
+
+message getExampleDataRsp {
+  repeated Status status_get = 1;
+  optional string msg_get = 2;
+  int32 code_get = 3;
+}
+
+message postExampleDataReq {
+  int32 id_post = 1;
+  string name_post = 2;
+}
+
+message postExampleDataRsp {
+  repeated Status status_post = 1;
+  optional string msg_post = 2;
+  int32 code_post = 3;
+}
+
+service API {
+  rpc getExampleData (getExampleDataReq) returns (getExampleDataRsp);
+  rpc postExampleData (postExampleDataReq) returns (postExampleDataRsp);
+}

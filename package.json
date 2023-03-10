@@ -1,0 +1,16 @@
+{
+  "name": "pb-to-ts-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node ./index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "protobufjs": "^7.2.2",
+    "protobufjs-cli": "^1.1.1",
+    "ts-morph": "^17.0.1"
+  }
+}

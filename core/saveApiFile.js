@@ -15,6 +15,11 @@ export function ${apiName}(req: api.${reqName}): Promise<api.${rspName}> {
 };
 `;
 
+/**
+ * 生成前端api请求文件
+ * @param {String} pbtsFilePath 生成的d.ts定义文件的路径
+ * @param {Object} options 用户传入的自定义配置选项
+ */
 module.exports = async function saveApiFile(pbtsFilePath, options) {
   const {
     requestModule,
@@ -41,11 +46,11 @@ module.exports = async function saveApiFile(pbtsFilePath, options) {
       if (reqNameMatchs && reqNameMatchs.length) {
         const apiName = reqNameMatchs[1];
         // 找到返回值的interface
-        const rsp = interfaces.find(item => item.getName() === `I${apiName}Rsp`);
+        const rspName = `I${apiName}Rsp`;
+        const rsp = interfaces.find(item => item.getName() === rspName);
         if (!rsp) {
           return;
         }
-        const rspName = `I${apiName}Rsp`;
         apiline += getLine({
           apiName,
           reqName: `${parentName}.${reqName}`,

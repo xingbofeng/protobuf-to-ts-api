@@ -12,12 +12,18 @@ module.exports = async function saveTypeScriptDefineFile(pbtsFilePath) {
   const modules = file.getModules();
   // 去掉生成的import
   file.getImportDeclarations().forEach(i => i.remove());
+
   // 对于importString的处理
   file.getImportStringLiterals().forEach(i => i.getParent().getParent().remove());
+
   travelAllModule(modules, module => {
-    const classes = module.getClasses();
     // 去掉生成的class
+    const classes = module.getClasses();
     classes.forEach(c => c.remove());
+
+    // 去掉生成的rpc-type
+    const typeAliases = module.getTypeAliases();
+    typeAliases.forEach(t => t.remove());
   });
   project.saveSync();
 }

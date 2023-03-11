@@ -46,10 +46,7 @@ module.exports = async function main() {
       process.stderr.write(chalk.bold.red(`there is not files for the flowing paths: \n ${files.join('\n')}`));
       process.exit(1);
     }
-    for (const filePath of protoFiles) {
-      await transferTSFile(filePath, options);
-      console.log(`success generate ${filePath} to ${path.resolve(options.folder, filePath)}.d.ts and ${path.resolve(options.folder, filePath)}.ts`);
-    }
+    await Promise.all(protoFiles.map(filePath => transferTSFile(filePath, options)));
   } catch (err) {
     console.error(err);
     process.exit(1);

@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "test.IGetExampleDataRsp": {
+      "description": "Properties of a GetExampleDataRsp.",
+      "type": "object",
+      "properties": {
+        "statusGet": {
+          "description": "GetExampleDataRsp statusGet",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/test.Status"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "msgGet": {
+          "description": "GetExampleDataRsp msgGet",
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "codeGet": {
+          "description": "GetExampleDataRsp codeGet",
+          "type": [
+            "null",
+            "number"
+          ]
+        }
+      }
+    },
+    "test.IPostExampleDataRsp": {
+      "description": "Properties of a PostExampleDataRsp.",
+      "type": "object",
+      "properties": {
+        "statusPost": {
+          "description": "PostExampleDataRsp statusPost",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/test.Status"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "msgPost": {
+          "description": "PostExampleDataRsp msgPost",
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "codePost": {
+          "description": "PostExampleDataRsp codePost",
+          "type": [
+            "null",
+            "number"
+          ]
+        }
+      }
+    },
+    "test.Status": {
+      "description": "Status enum.",
+      "enum": [
+        0,
+        1,
+        2
+      ],
+      "type": "number"
+    }
+  }
+}

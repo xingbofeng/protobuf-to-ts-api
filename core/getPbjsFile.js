@@ -10,7 +10,7 @@ const mkdirp = require('mkdirp');
 
 module.exports = async function getPbjsFile(filePath, options = {}) {
   const { folder = '' } = options;
-  const fileName = `${filePath}.js`;
+  const fileName = filePath.replace('.proto', '.js');
   const pbjsFilePath = path.resolve(process.cwd(), folder, fileName);
   const p = path.dirname(pbjsFilePath);
   await mkdirp(p);

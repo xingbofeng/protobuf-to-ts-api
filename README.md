@@ -1,5 +1,6 @@
 # pb-to-ts-api
-pb-to-ts-api 提供将标准protobuf文件转化为d.ts文件和生成自定义api请求方法文件的方法。
+
+前后台联调过程中，前端同学拿到协议后，还需要对protobuf协议转化为ts代码，并还需要手动书写大量的http请求代码，然而代码大部分都是相同的，完全可以通过自动生成的方式来完成，[pb-to-ts-api](https://github.com/xingbofeng/protobuf-to-ts-api)就较好地解决了这个问题，[pb-to-ts-api](https://github.com/xingbofeng/protobuf-to-ts-api)基于protobufjs-cli，将cli处理后的代码做简单转换，并提供将标准protobuf文件转化为d.ts文件和生成自定义api请求方法文件的方法。后续还将提供mock方法来改善我们前后台的联调体验。
 
 ## 开始
 
@@ -9,7 +10,7 @@ pb2TSApi ./*/**.proto
 ```
 
 ## 使用方法
-### 创建你自定义的protobuf文件，按照指定的规则定义协议的请求字段和返回字段
+创建你自定义的protobuf文件，按照指定的规则定义协议的请求字段和返回字段
 
 ```proto
 syntax = "proto3";

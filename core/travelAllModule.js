@@ -8,9 +8,10 @@ module.exports = function travelAllModule(modules, callback, parentName = '') {
   for (const module of modules) {
     const children = module.getModules();
     const hasModule = children.length > 0;
-    callback(module, `${parentName ? '.' : ''}${module.getName()}`);
+    const fullName = `${parentName ? `${parentName}.` : ''}${module.getName()}`;
+    callback(module, fullName);
     if (hasModule) {
-      travelAllModule(children, callback, `${parentName}.${module.getName()}`);
+      travelAllModule(children, callback, fullName);
     }
   }
 }

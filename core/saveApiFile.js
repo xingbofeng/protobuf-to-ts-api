@@ -3,8 +3,8 @@ const fs = require('fs');
 const { Project } = require('ts-morph');
 const travelAllModule = require('./travelAllModule');
 
-const getLinePerfix = ({ requestModule, tsDefineFilename }) => `
-/* eslint-disable */
+const getLinePerfix = ({ requestModule, tsDefineFilename }) =>
+`/* eslint-disable */
 import request from ${requestModule};
 import api from './${tsDefineFilename.replace('.ts', '')}';
 `;

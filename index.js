@@ -13,7 +13,7 @@ const getHelp = () =>
 ${chalk.bold.green('--requestModule -r')}: the request module of you want to set, default is ${chalk.bold.red(`'axios'`)}, you can set to your custom request method, for example ${chalk.bold.red(`'@/request'`)};
 ${chalk.bold.green('--baseUrl -b')}: the base url of you want to set, default is ${chalk.bold.red(`'/'`)}, you can set to your api path, for example ${chalk.bold.red(`'/api'`)};
 ${chalk.bold.green('--folder -f')}: the folder of you want to save the output files, default is ${chalk.bold.red(`'./api'`)};
-`
+`;
 
 module.exports = async function main() {
   try {
@@ -41,7 +41,11 @@ module.exports = async function main() {
       process.stderr.write(getUsage());
       process.exit(1);
     }
-    const protoFiles = await glob(files, { ignore: 'node_modules/**' });
+    const protoFiles = await glob(files, { ignore: 'node_modules/**', windowsPathsNoEscape: true });
+    if (!protoFiles.length) {
+      process.stderr.write(chalk.bold.red(`there is not files for the flowing paths: \n ${files.join('\n')}`));
+      process.exit(1);
+    }
     for (const filePath of protoFiles) {
       await transferTSFile(filePath, options);
       console.log(`success generate ${filePath} to ${path.resolve(options.folder, filePath)}.d.ts and ${path.resolve(options.folder, filePath)}.ts`);

@@ -10,7 +10,7 @@ module.exports = function getPbtsFile(pbjsFilePath, options = {}) {
   const { folder = '' } = options;
   const pbtsFilePath = path.resolve(process.cwd(), folder, pbjsFilePath.replace('.js', '.d.ts'));
   return new Promise((resolve, reject) => {
-    pbts.main(['-o', pbtsFilePath, pbjsFilePath], err => {
+    pbts.main(['-p', process.cwd(), '-o', pbtsFilePath, pbjsFilePath], err => {
       if (err) {
         reject(err);
       }

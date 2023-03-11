@@ -1,5 +1,5 @@
 syntax = "proto3";
-package example;
+package example2;
 
 enum Status {
   SUCCESS = 0;

@@ -1,16 +1,11 @@
 {
   "test.IGetExampleDataRsp": {
-    "laboris_f": -98310722,
-    "inde": -16904797
+    "nulla1a": "mollit culpa est"
   },
   "test.IPostExampleDataRsp": {
-    "msgPost": null,
-    "codePost": 88604436.77528474,
     "statusPost": null,
-    "Lorem90e": "laboris sint id",
-    "dolore_cc1": 81599787.8483052,
-    "auteb3": "proident sint id esse",
-    "eu5": true
+    "codePost": -22994397.710579813,
+    "msgPost": "sit do in Duis"
   },
-  "test.Status": 0
+  "test.Status": 1
 }

@@ -1,4 +1,3 @@
-const path = require('path');
 const glob = require('glob');
 const minimist = require('minimist');
 const chalk = require('chalk');
@@ -13,6 +12,7 @@ const getHelp = () =>
 ${chalk.bold.green('--requestModule -r')}: the request module of you want to set, default is ${chalk.bold.red(`'axios'`)}, you can set to your custom request method, for example ${chalk.bold.red(`'@/request'`)};
 ${chalk.bold.green('--baseUrl -b')}: the base url of you want to set, default is ${chalk.bold.red(`'/'`)}, you can set to your api path, for example ${chalk.bold.red(`'/api'`)};
 ${chalk.bold.green('--folder -f')}: the folder of you want to save the output files, default is ${chalk.bold.red(`'./api'`)};
+${chalk.bold.green('--path -p')}: the root path set to protobufjs, default is ${chalk.bold.red('the path of this command run')};
 `;
 
 module.exports = async function main() {
@@ -22,6 +22,7 @@ module.exports = async function main() {
         requestModule: 'r',
         baseUrl: 'b',
         folder: 'f',
+        path: 'p',
         help: 'h',
       },
       string: ['requestModule', 'baseUrl'],
@@ -29,6 +30,7 @@ module.exports = async function main() {
         requestModule: 'axios',
         baseUrl: '/',
         folder: './api',
+        path: process.cwd(),
         help: '',
       },
     });

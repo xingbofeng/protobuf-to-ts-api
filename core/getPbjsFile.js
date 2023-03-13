@@ -15,7 +15,7 @@ module.exports = async function getPbjsFile(filePath, options = {}) {
   const p = path.dirname(pbjsFilePath);
   await mkdirp(p);
   return new Promise((resolve, reject) => {
-    pbjs.main(['-p', process.cwd(), '-t', 'static-module', '-w', 'commonjs', '-o', pbjsFilePath, path.resolve(process.cwd(), filePath)], err => {
+    pbjs.main(['-p', options.path, '-t', 'static-module', '-w', 'commonjs', '-o', pbjsFilePath, path.resolve(process.cwd(), filePath)], err => {
       if (err) {
         reject(err);
       }

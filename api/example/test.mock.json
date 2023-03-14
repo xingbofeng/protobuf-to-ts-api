@@ -1,11 +1,21 @@
 {
   "test.IGetExampleDataRsp": {
-    "nulla1a": "mollit culpa est"
+    "city": "officia ex",
+    "code": -64145670.838962235,
+    "msg": "et",
+    "status": [
+      1,
+      0,
+      0,
+      1
+    ]
   },
   "test.IPostExampleDataRsp": {
-    "statusPost": null,
-    "codePost": -22994397.710579813,
-    "msgPost": "sit do in Duis"
+    "code": -36498026.48023335,
+    "msg": "magna ea sed aute",
+    "status": [
+      1
+    ]
   },
-  "test.Status": 1
+  "test.Status": 2
 }

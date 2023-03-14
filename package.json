@@ -1,6 +1,6 @@
 {
   "name": "pb-to-ts-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "help you transfer protobuf file to your custom d.ts and api request method",
   "main": "index.js",
   "scripts": {

@@ -96,3 +96,4 @@ mock.json文件如下：
 | --requestModule/-r  | 请求方法，默认为'axios'，用户可以替换为项目中自定义的请求方法，如'@/request' |
 | --baseUrl/-b  | 请求的baseUrl，默认为'/'，用户可以替换为项目中后台服务部署的路径，如'/api' |
 | --folder/-f  | 生成目录的路径，默认为'./api'，表示d.ts和ts文件存放位置，用户可以自定义存放到项目中的任意地方 |
+| --path/-p  | 转化proto文件的根路径，默认为命令执行路径，即`process.cwd()` |

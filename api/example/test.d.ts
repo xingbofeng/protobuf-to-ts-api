@@ -10,48 +10,40 @@ export namespace test {
 
     /** Properties of a GetExampleDataReq. */
     interface IGetExampleDataReq {
-
-        /** GetExampleDataReq idGet */
-        idGet?: (number|null);
-
-        /** GetExampleDataReq nameGet */
-        nameGet?: (string|null);
+        /** GetExampleDataReq id */
+        id: number;
+        /** GetExampleDataReq name */
+        name: string;
     }
 
     /** Properties of a GetExampleDataRsp. */
     interface IGetExampleDataRsp {
-
-        /** GetExampleDataRsp statusGet */
-        statusGet?: (test.Status[]|null);
-
-        /** GetExampleDataRsp msgGet */
-        msgGet?: (string|null);
-
-        /** GetExampleDataRsp codeGet */
-        codeGet?: (number|null);
+        /** GetExampleDataRsp status */
+        status: test.Status[];
+        /** GetExampleDataRsp msg */
+        msg: string;
+        /** GetExampleDataRsp city */
+        city: string;
+        /** GetExampleDataRsp code */
+        code: number;
     }
 
     /** Properties of a PostExampleDataReq. */
     interface IPostExampleDataReq {
-
-        /** PostExampleDataReq idPost */
-        idPost?: (number|null);
-
-        /** PostExampleDataReq namePost */
-        namePost?: (string|null);
+        /** PostExampleDataReq id */
+        id: number;
+        /** PostExampleDataReq name */
+        name: string;
     }
 
     /** Properties of a PostExampleDataRsp. */
     interface IPostExampleDataRsp {
-
-        /** PostExampleDataRsp statusPost */
-        statusPost?: (test.Status[]|null);
-
-        /** PostExampleDataRsp msgPost */
-        msgPost?: (string|null);
-
-        /** PostExampleDataRsp codePost */
-        codePost?: (number|null);
+        /** PostExampleDataRsp status */
+        status: test.Status[];
+        /** PostExampleDataRsp msg */
+        msg: string;
+        /** PostExampleDataRsp code */
+        code: number;
     }
 
     namespace API {

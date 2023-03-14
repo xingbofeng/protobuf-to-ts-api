@@ -16,6 +16,9 @@ module.exports = async function saveTypeScriptDefineFile(pbtsFilePath) {
   // 对于importString的处理
   file.getImportStringLiterals().forEach(i => i.getParent().getParent().remove());
 
+  // const interface = file.getInterfaceOrThrow();
+  // interface.
+
   travelAllModule(modules, module => {
     // 去掉生成的class
     const classes = module.getClasses();
@@ -24,6 +27,15 @@ module.exports = async function saveTypeScriptDefineFile(pbtsFilePath) {
     // 去掉生成的rpc-type
     const typeAliases = module.getTypeAliases();
     typeAliases.forEach(t => t.remove());
+
+    module.getInterfaces().forEach(item => {
+      const structure = item.getStructure();
+      structure.properties.forEach(property => {
+        property.hasQuestionToken = false;
+        property.type = property.type.replace(/^\((\S*)\|null\)$/, '$1');
+      });
+      item.set(structure);
+    });
   });
   project.saveSync();
 }

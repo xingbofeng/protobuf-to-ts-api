@@ -5,69 +5,58 @@
       "description": "Properties of a GetExampleDataRsp.",
       "type": "object",
       "properties": {
-        "statusGet": {
-          "description": "GetExampleDataRsp statusGet",
-          "anyOf": [
-            {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/test.Status"
-              }
-            },
-            {
-              "type": "null"
-            }
-          ]
+        "status": {
+          "description": "GetExampleDataRsp status",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/test.Status"
+          }
         },
-        "msgGet": {
-          "description": "GetExampleDataRsp msgGet",
-          "type": [
-            "null",
-            "string"
-          ]
+        "msg": {
+          "description": "GetExampleDataRsp msg",
+          "type": "string"
         },
-        "codeGet": {
-          "description": "GetExampleDataRsp codeGet",
-          "type": [
-            "null",
-            "number"
-          ]
+        "city": {
+          "description": "GetExampleDataRsp city",
+          "type": "string"
+        },
+        "code": {
+          "description": "GetExampleDataRsp code",
+          "type": "number"
         }
-      }
+      },
+      "required": [
+        "city",
+        "code",
+        "msg",
+        "status"
+      ]
     },
     "test.IPostExampleDataRsp": {
       "description": "Properties of a PostExampleDataRsp.",
       "type": "object",
       "properties": {
-        "statusPost": {
-          "description": "PostExampleDataRsp statusPost",
-          "anyOf": [
-            {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/test.Status"
-              }
-            },
-            {
-              "type": "null"
-            }
-          ]
+        "status": {
+          "description": "PostExampleDataRsp status",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/test.Status"
+          }
         },
-        "msgPost": {
-          "description": "PostExampleDataRsp msgPost",
-          "type": [
-            "null",
-            "string"
-          ]
+        "msg": {
+          "description": "PostExampleDataRsp msg",
+          "type": "string"
         },
-        "codePost": {
-          "description": "PostExampleDataRsp codePost",
-          "type": [
-            "null",
-            "number"
-          ]
+        "code": {
+          "description": "PostExampleDataRsp code",
+          "type": "number"
         }
-      }
+      },
+      "required": [
+        "code",
+        "msg",
+        "status"
+      ]
     },
     "test.Status": {
       "description": "Status enum.",

@@ -8,25 +8,26 @@ enum Status {
 }
 
 message GetExampleDataReq {
-  int32 id_get = 1;
-  string name_get = 2;
+  int32 id = 1;
+  string name = 2;
 }
 
 message GetExampleDataRsp {
-  repeated Status status_get = 1;
-  optional string msg_get = 2;
-  int32 code_get = 3;
+  repeated Status status = 1;
+  string msg = 2;
+  string city = 3;
+  int32 code = 4;
 }
 
 message PostExampleDataReq {
-  int32 id_post = 1;
-  string name_post = 2;
+  int32 id = 1;
+  string name = 2;
 }
 
 message PostExampleDataRsp {
-  repeated Status status_post = 1;
-  optional string msg_post = 2;
-  int32 code_post = 3;
+  repeated Status status = 1;
+  optional string msg = 2;
+  int32 code = 3;
 }
 
 service API {

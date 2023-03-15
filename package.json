@@ -1,6 +1,6 @@
 {
   "name": "pb-to-ts-api",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "help you transfer protobuf file to your custom d.ts and api request method",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",
+    "express": "^4.18.2",
     "glob": "^9.2.1",
     "json-schema-faker": "^0.5.0-rcv.46",
     "minimist": "^1.2.8",

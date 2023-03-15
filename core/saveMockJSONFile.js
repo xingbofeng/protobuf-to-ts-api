@@ -9,7 +9,19 @@ const jsf = require('json-schema-faker');
 module.exports = async function saveJSONSchemaFile(jsonSchemaFilePath, options) {
   const schemaFileStr = await fs.promises.readFile(jsonSchemaFilePath, { encoding: 'utf-8' });
   const schema = JSON.parse(schemaFileStr.replace(/(?<=#\/)definitions\//g, ''));
-  const json = await jsf.resolve(schema.definitions);
+  const jsfResult = await jsf.resolve(schema.definitions);
+  let json = {};
+  for (const key in jsfResult) {
+    if (Object.hasOwnProperty.call(jsfResult, key)) {
+      const rspNameMatchs = key.match(/I(\S*)Rsp$/);
+      if (rspNameMatchs && rspNameMatchs.length) {
+        const apiName = rspNameMatchs[1];
+        json[apiName] = jsfResult[key];
+      }
+    }
+  }
   const fileContent = JSON.stringify(json, null, 2);
-  fs.writeFileSync(jsonSchemaFilePath.replace('.json', '.mock.json'), fileContent, { encoding: 'utf-8' });
+  const mockFilePath = jsonSchemaFilePath.replace('.json', '.mock.json');
+  fs.writeFileSync(mockFilePath, fileContent, { encoding: 'utf-8' });
+  return mockFilePath;
 }

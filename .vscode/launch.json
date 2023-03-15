@@ -9,7 +9,7 @@
         "<node_internals>/**"
       ],
       "program": "${workspaceFolder}/bin/pb2TSApi",
-      "args": ["example/*.proto"]
+      "args": ["example/*.proto", "-p", "8099", "-o", "false", "-m", "-r", "./"]
     }
   ]
 }

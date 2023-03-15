@@ -23,32 +23,32 @@ enum Status {
 }
 
 message GetExampleDataReq {
-  int32 id_get = 1;
-  string name_get = 2;
+  int32 id = 1;
+  string name = 2;
 }
 
 message GetExampleDataRsp {
-  repeated Status status_get = 1;
-  optional string msg_get = 2;
-  int32 code_get = 3;
+  repeated Status status = 1;
+  string msg = 2;
+  string city = 3;
+  int32 code = 4;
 }
 
 message PostExampleDataReq {
-  int32 id_post = 1;
-  string name_post = 2;
+  int32 id = 1;
+  string name = 2;
 }
 
 message PostExampleDataRsp {
-  repeated Status status_post = 1;
-  optional string msg_post = 2;
-  int32 code_post = 3;
+  repeated Status status = 1;
+  optional string msg = 2;
+  int32 code = 3;
 }
 
 service API {
   rpc getExampleData (GetExampleDataReq) returns (GetExampleDataRsp);
   rpc postExampleData (PostExampleDataReq) returns (PostExampleDataRsp);
 }
-
 ```
 
 通过pb2TSApi转换工具，上述协议文件会生成d.ts文件、请求文件、schema文件、mock文件，请求ts文件举例如下：
@@ -65,7 +65,6 @@ export function GetExampleData(req: api.test.IGetExampleDataReq): Promise<api.te
 export function PostExampleData(req: api.test.IPostExampleDataReq): Promise<api.test.IPostExampleDataRsp> {
   return request.post('/PostExampleData', req);
 };
-
 ```
 
 mock.json文件如下：
@@ -73,19 +72,24 @@ mock.json文件如下：
 ```json
 {
   "test.IGetExampleDataRsp": {
-    "laboris_f": -98310722,
-    "inde": -16904797
+    "city": "officia ex",
+    "code": -64145670.838962235,
+    "msg": "et",
+    "status": [
+      1,
+      0,
+      0,
+      1
+    ]
   },
   "test.IPostExampleDataRsp": {
-    "msgPost": null,
-    "codePost": 88604436.77528474,
-    "statusPost": null,
-    "Lorem90e": "laboris sint id",
-    "dolore_cc1": 81599787.8483052,
-    "auteb3": "proident sint id esse",
-    "eu5": true
+    "code": -36498026.48023335,
+    "msg": "magna ea sed aute",
+    "status": [
+      1
+    ]
   },
-  "test.Status": 0
+  "test.Status": 2
 }
 ```
 

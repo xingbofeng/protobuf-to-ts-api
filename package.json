@@ -1,10 +1,12 @@
 {
   "name": "pb-to-ts-api",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "help you transfer protobuf file to your custom d.ts and api request method",
   "main": "index.js",
   "scripts": {
-    "dev": "node ./index.js"
+    "dev": "webpack --config webpack.config.js --watch",
+    "build": "webpack --config webpack.config.js",
+    "lint:fix": "eslint --ext .ts ./ --fix --cache"
   },
   "keywords": [
     "pb",
@@ -13,8 +15,8 @@
     "mock"
   ],
   "bin": {
-    "pb2TSApi": "./bin/pb2TSApi",
-    "pb-to-ts-api": "./bin/pb2TSApi"
+    "pb2TSApi": "./dist/cli.js",
+    "pb-to-ts-api": "./dist/cli.js"
   },
   "author": "xingbofeng",
   "license": "ISC",
@@ -29,5 +31,22 @@
     "protobufjs-cli": "^1.1.1",
     "ts-morph": "^17.0.1",
     "typescript-json-schema": "^0.55.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/minimist": "^1.2.2",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "eslint": "^8.36.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-webpack-plugin": "^4.0.0",
+    "source-map-support": "^0.5.21",
+    "ts-loader": "^9.4.2",
+    "type-fest": "^3.6.1",
+    "typescript": "^4.9.5",
+    "webpack": "^5.76.2",
+    "webpack-cli": "^5.0.1",
+    "webpack-node-externals": "^3.0.0"
   }
 }

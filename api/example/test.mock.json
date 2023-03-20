@@ -1,0 +1,22 @@
+{
+  "GetExampleData": {
+    "city": "tempor ullamco esse reprehenderit",
+    "code": -85752895.45259768,
+    "msg": "nostrud adipisicing",
+    "status": [
+      2,
+      2,
+      1,
+      2,
+      0
+    ]
+  },
+  "PostExampleData": {
+    "code": -83396301.83144715,
+    "msg": "pariatur tempor",
+    "status": [
+      0,
+      0
+    ]
+  }
+}

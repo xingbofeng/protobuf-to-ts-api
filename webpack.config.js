@@ -22,7 +22,9 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader',
+        use: {
+          loader: 'babel-loader',
+        },
         exclude: /node_modules/,
       },
     ],
@@ -32,7 +34,6 @@ module.exports = {
     new ESLintPlugin({
       extensions: ['js', 'ts'],
       exclude: ['node_modules', 'dist'],
-      // formatter: 'table',
     }),
   ],
 };

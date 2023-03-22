@@ -96,8 +96,6 @@ mock.json文件如下：
 
 使用`postman`发送请求，可以正常使用mock功能：
 
-![](https://km.woa.com/asset/c77a6edfd3f34c9fbfbb4b8fdb84d354?height=1356&origin_url=https%3A%2F%2Fstatic.wecity.qq.com%2Fh5%2F2023-3%2F1-1e1bfcf5c5eb716484e01a9762aa919c.png&width=1726)
-
 
 ### 参数
 

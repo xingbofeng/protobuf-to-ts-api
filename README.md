@@ -108,3 +108,9 @@ mock.json文件如下：
 | --optional/-o | 因为 protobuf 3.0 版本的协议默认将会转换所有字段为可选字段，设置-o为`false`之后，所有字段的可选值将会去除，因为遵循 protobuf 3.0 版本的协议，默认这个配置为`true` |
 | --mock/-m | 是否生成mock文件和开启mock server，默认为`false`，即不开启 |
 | --port/-p | 开启mock server 的端口号，默认为`3000` |
+
+## TODO
+
+* 除GET/POST请求外的额外请求支持
+* mock数据支持更细粒度的配置
+* 可视化界面的客户端，比如electorn

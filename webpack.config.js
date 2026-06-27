@@ -29,11 +29,12 @@ module.exports = {
       },
     ],
   },
+  
   plugins: [
     new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
-    new ESLintPlugin({
-      extensions: ['js', 'ts'],
-      exclude: ['node_modules', 'dist'],
-    }),
+    // new ESLintPlugin({
+    //   extensions: ['js', 'ts'],
+    //   exclude: ['node_modules', 'dist'],
+    // }),
   ],
 };

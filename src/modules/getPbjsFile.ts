@@ -15,8 +15,16 @@ export async function getPbjsFile(filePath: string, options: IOptions): Promise<
   const pbjsFilePath = path.resolve(process.cwd(), folder, fileName);
   const p = path.dirname(pbjsFilePath);
   await mkdirp(p);
+  let cmd:string[] = []
+  if (options.includeProtos && options.includeProtos.length > 0) {
+    cmd = options.includeProtos.reduce((acc, curr) => {
+      return acc.concat(['-p', path.resolve(process.cwd(), curr)]);
+    }, [] as string[]);
+  }
+  cmd.push('-p', options.root, '--keep-case', '-t', 'static-module', '-w', options.importModuleStyle, '-o', pbjsFilePath, path.resolve(process.cwd(), filePath));
+  console.log('pbjs cmd:', cmd.join(' '));
   return new Promise((resolve, reject) => {
-    pbjs.main(['-p', options.root, '-t', 'static-module', '-w', 'commonjs', '-o', pbjsFilePath, path.resolve(process.cwd(), filePath)], err => {
+    pbjs.main(cmd, err => {
       if (err) {
         reject(err);
       }

@@ -1,0 +1,65 @@
+syntax = "proto3";
+package echo;
+
+import "http_ext.proto";
+
+enum Status {
+  SUCCESS = 0;
+  FAIL = 1;
+  UNKNOWN = 2;
+}
+
+message GetExampleDataReq {
+  int32 id = 1;
+  string name = 2;
+}
+
+message GetExampleDataRsp {
+  repeated Status status = 1;
+  string msg = 2;
+  string city = 3;
+  int32 code = 4;
+}
+
+message PostExampleDataReq {
+  int32 id = 1;
+  string nick_name = 2;
+}
+
+message PostExampleDataRsp {
+  repeated Status status = 1;
+  optional string msg = 2;
+  int32 code = 3;
+}
+
+message DeleteExampleDataReq {
+  int32 id = 1;
+}
+
+message DeleteExampleDataRsp {
+  repeated Status status = 1;
+  optional string msg = 2;
+  int32 code = 3;
+}
+
+service Echo {
+  // 获取示例数据
+  rpc getExampleData (GetExampleDataReq) returns (GetExampleDataRsp) {
+    option (http_ext.http_rule) = {
+      method: "GET"
+      path: "/v1/example/data"
+    };
+  };
+  // 提交示例数据
+  rpc postExampleData (PostExampleDataReq) returns (PostExampleDataRsp) {
+    option (http_ext.http_rule) = {
+      method: "POST"
+    };
+  };
+  rpc deleteExampleData (DeleteExampleDataReq) returns (DeleteExampleDataRsp) {
+    option (http_ext.http_rule) = {
+      method: "DELETE"
+      path: "/v1/example/data"
+    };
+  };
+} 

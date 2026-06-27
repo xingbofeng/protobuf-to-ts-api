@@ -1,5 +1,5 @@
 /* eslint-disable */
-import request from axios;
+import request from "axios";
 import api from './test.d';
 
 export function GetExampleData(req: api.test.IGetExampleDataReq): Promise<api.test.IGetExampleDataRsp> {

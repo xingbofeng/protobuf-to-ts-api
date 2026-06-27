@@ -1,1 +1,4 @@
 node_modules/
+dist/
+example/api/
+pnpm-lock.yaml

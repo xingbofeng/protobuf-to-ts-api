@@ -53,6 +53,7 @@ service API {
 
 通过pb2TSApi转换工具，上述协议文件会生成d.ts文件、请求文件、schema文件、mock文件，请求ts文件举例如下：
 
+(原版)
 ```typescript
 /* eslint-disable */
 import request from axios;
@@ -64,6 +65,22 @@ export function GetExampleData(req: api.test.IGetExampleDataReq): Promise<api.te
 
 export function PostExampleData(req: api.test.IPostExampleDataReq): Promise<api.test.IPostExampleDataRsp> {
   return request.post('/PostExampleData', req);
+};
+```
+
+（现今fork并改版后,更接近rpc service调用方式）
+```typescript
+/* eslint-disable */
+import request from "axios";
+import api from './echo.d';
+
+export class EchoService {
+
+  /** HTTP GET 方法示例，且跳过认证 */
+  static async getExampleData(req: api.echo.IGetExampleDataReq): Promise<api.echo.IGetExampleDataRsp> {
+    return await request.get('/v1/example/data', { params: req })
+  };
+  
 };
 ```
 
@@ -104,13 +121,16 @@ mock.json文件如下：
 | --requestModule/-r | 请求方法，默认为'axios'，用户可以替换为项目中自定义的请求方法，如'@/request' |
 | --baseUrl/-b | 请求的baseUrl，默认为'/'，用户可以替换为项目中后台服务部署的路径，如'/api' |
 | --folder/-f | 生成目录的路径，默认为'./api'，表示d.ts和ts文件存放位置，用户可以自定义存放到项目中的任意地方 |
-| --root/-r | 转化proto文件的根路径，默认为命令执行路径，即`process.cwd()` |
+| --root/-t | 转化proto文件的根路径，默认为命令执行路径，即`process.cwd()` |
 | --optional/-o | 因为 protobuf 3.0 版本的协议默认将会转换所有字段为可选字段，设置-o为`false`之后，所有字段的可选值将会去除，因为遵循 protobuf 3.0 版本的协议，默认这个配置为`true` |
 | --mock/-m | 是否生成mock文件和开启mock server，默认为`false`，即不开启 |
 | --port/-p | 开启mock server 的端口号，默认为`3000` |
+| --protoOptionTagHttpMethod | 指定api请求方法的 method option tag,如(http_ext.http_rule).method |
+| --protoOptionTagHttpPath | 指定api请求方法的 method option tag,如(http_ext.http_rule).path |
+
 
 ## TODO
 
-* 除GET/POST请求外的额外请求支持
-* mock数据支持更细粒度的配置
-* 可视化界面的客户端，比如electorn
+* 除GET/POST请求外的额外请求支持（当前版本二次开发后已支持）
+* mock数据支持更细粒度的配置（当前版本二次开发后已支持）
+* 可视化界面的客户端，比如electron

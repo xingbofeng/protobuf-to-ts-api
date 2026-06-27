@@ -1,0 +1,16 @@
+syntax = "proto3";
+package http_ext;
+
+option go_package = "github.com/995933447/mconfigcenter-dashboard/httpext";
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.MethodOptions {
+  HttpRule http_rule = 51001; // 定义http访问规则
+}
+
+message HttpRule {
+  string method = 1; // GET, POST, etc.
+  string path = 2;   // URL path
+  bool no_auth = 3; // 是否跳过认证
+}

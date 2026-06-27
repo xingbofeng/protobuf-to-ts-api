@@ -11,8 +11,10 @@ import { IOptions } from '../interfaces/IOptions';
 export function getPbtsFile(pbjsFilePath: string, options: IOptions): Promise<string> {
   const { folder = '' } = options;
   const pbtsFilePath = path.resolve(process.cwd(), folder, pbjsFilePath.replace('.js', '.d.ts'));
+  const cmd = ['-p', options.root, '-o', pbtsFilePath, pbjsFilePath];
+  console.log('pbts cmd:', cmd.join(' '));
   return new Promise((resolve, reject) => {
-    pbts.main(['-p', options.root, '-o', pbtsFilePath, pbjsFilePath], err => {
+    pbts.main(cmd, err => {
       if (err) {
         reject(err);
       }

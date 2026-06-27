@@ -21,13 +21,16 @@ export async function transferTSFile(filePath: string, mockServer: Express, opti
   const pbjsFilePath = await getPbjsFile(filePath, options);
   const pbtsFilePath = await getPbtsFile(pbjsFilePath, options);
   await fs.promises.unlink(pbjsFilePath);
+  // saveApiFile 直接解析 proto 文件，不依赖 d.ts 中的 class
+  const apiMethods = await saveApiFile(filePath, pbtsFilePath, options);
+  // 先清理 d.ts 中的冗余 class 和 type alias
   await saveTypeScriptDefineFile(pbtsFilePath, options);
-  await saveApiFile(pbtsFilePath, options);
+  // JSON Schema 基于清理后的 d.ts 生成
   const jsonSchemaFilePath = await saveJSONSchemaFile(pbtsFilePath);
   const mockFilePath = await saveMockJSONFile(jsonSchemaFilePath);
   console.log(`success generate ${filePath} to ${path.resolve(options.folder, filePath)}.d.ts and ${path.resolve(options.folder, filePath)}.ts`);
   if (options.mock && mockServer) {
     console.log('begin open mock server');
-    await generateMockRoute(mockFilePath, mockServer, options);
+    await generateMockRoute(apiMethods, mockFilePath, mockServer, options);
   }
 }

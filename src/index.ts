@@ -15,11 +15,13 @@ const getHelp = () =>
 ${chalk.bold.green('--requestModule -r')}: the request module of you want to set, default is ${chalk.bold.red('\'axios\'')}, you can set to your custom request method, for example ${chalk.bold.red('\'@/request\'')};
 ${chalk.bold.green('--baseUrl -b')}: the base url of you want to set, default is ${chalk.bold.red('\'/\'')}, you can set to your api path, for example ${chalk.bold.red('\'/api\'')};
 ${chalk.bold.green('--folder -f')}: the folder of you want to save the output files, default is ${chalk.bold.red('\'./api\'')};
-${chalk.bold.green('--root -r')}: the root path set to protobufjs, default is ${chalk.bold.red('the path of this command run')};
+${chalk.bold.green('--root -t')}: the root path set to protobufjs, default is ${chalk.bold.red('the path of this command run')};
 ${chalk.bold.green('--optional -o')}: is transfrom d.ts optional to false, because of protobuf 3.0 set all filed is optional, default is ${chalk.bold.red('true')};
 ${chalk.bold.green('--mock -m')}: is open mock server, default is ${chalk.bold.red('false')};
-${chalk.bold.green('--port -p')}: mock server port, default is ${chalk.bold.red('3000')};
-`;
+${chalk.bold.green('--port -p')}: mock server port, default is ${chalk.bold.red('3000')}; 
+${chalk.bold.green('--include -i')}: include proto files list, default is ${chalk.bold.red('[]')}; 
+${chalk.bold.green('--protoOptionTagHttpMethod')}: tag of proto option indicate http method}; 
+${chalk.bold.green('--protoOptionTagHttpPath')}: tag of proto option indicate http path};`;
 
 export async function main() {
   try {
@@ -28,11 +30,13 @@ export async function main() {
         requestModule: 'r',
         baseUrl: 'b',
         folder: 'f',
-        root: 'r',
+        root: 't',
         optional: 'o',
         mock: 'm',
         port: 'p',
         help: 'h',
+        includeProtos: 'i',
+        importModuleStyle: 'I',
       },
       string: ['requestModule', 'baseUrl', 'folder', 'root', 'port'],
       boolean: ['optional', 'mock'],
@@ -45,6 +49,7 @@ export async function main() {
         mock: false,
         port: '3000',
         help: '',
+        importModuleStyle: 'es6',
       },
     });
     if (argv.help) {
@@ -52,6 +57,12 @@ export async function main() {
       process.exit(1);
     }
     const { _: files } = argv;
+    const includeProtos: string[] = [];
+    if (typeof argv.includeProtos === 'string') {
+      includeProtos.push(argv.includeProtos as string);
+    } else {
+      includeProtos.push(...(argv.includeProtos as string[] || []));
+    }
     const options: IOptions = {
       requestModule: argv.requestModule,
       baseUrl: argv.baseUrl,
@@ -61,6 +72,10 @@ export async function main() {
       mock: argv.mock,
       port: argv.port,
       help: argv.help,
+      includeProtos: includeProtos, // 新增的包含proto文件路径列表
+      protoOptionTagHttpMethod: argv.protoOptionTagHttpMethod,
+      protoOptionTagHttpPath: argv.protoOptionTagHttpPath,
+      importModuleStyle: argv.importModuleStyle,
     };
     if (!files.length) {
       process.stderr.write(getUsage());

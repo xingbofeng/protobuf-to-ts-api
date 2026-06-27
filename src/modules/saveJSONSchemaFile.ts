@@ -13,6 +13,7 @@ export async function saveJSONSchemaFile(pbtsFilePath: string) {
   };
   const compilerOptions = {
     strictNullChecks: true,
+    esModuleInterop: true,
   };
 
   const program = getProgramFromFiles([path.resolve(pbtsFilePath)], compilerOptions, process.cwd());
@@ -20,6 +21,6 @@ export async function saveJSONSchemaFile(pbtsFilePath: string) {
   const symbols = (generator?.getUserSymbols() || []).filter(symbol => /I(\S*)Rsp$/.test(symbol));
   const schema = generator?.getSchemaForSymbols(symbols);
   const jsonSchemaFilePath = pbtsFilePath.replace('.d.ts', '.json');
-  await fs.promises.writeFile(jsonSchemaFilePath, JSON.stringify(schema, null, 2), { encoding: 'utf-8' });
+  await fs.promises.writeFile(jsonSchemaFilePath, JSON.stringify(schema ?? {}, null, 2), { encoding: 'utf-8' });
   return jsonSchemaFilePath;
 }

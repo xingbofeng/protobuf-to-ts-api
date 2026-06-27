@@ -2,7 +2,6 @@ import express, { Express } from 'express';
 import fs from 'fs';
 
 import { IOptions } from '../interfaces/IOptions';
-import { getRequestMethod } from '../utils/getRequestMethod';
 import { ApiMethod } from './saveApiFile';
 
 /**

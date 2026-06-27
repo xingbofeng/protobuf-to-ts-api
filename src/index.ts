@@ -42,7 +42,7 @@ export async function main() {
       boolean: ['optional', 'mock'],
       default: {
         requestModule: 'axios',
-        baseUrl: '',
+        baseUrl: '/',
         folder: './api',
         root: process.cwd(),
         optional: true,

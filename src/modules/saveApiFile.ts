@@ -7,6 +7,13 @@ import { IOptions } from "../interfaces/IOptions";
 import { RequestMethods } from "../interfaces/RequestMethods";
 import { getProtoOption } from "../utils/getProtoOption";
 
+const joinUrlPath = (baseUrl: string, path: string): string => {
+  if (!baseUrl || baseUrl === '/') return path.startsWith('/') ? path : `/${path}`;
+  const base = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  const suffix = path.startsWith('/') ? path : `/${path}`;
+  return base + suffix;
+};
+
 const getLinePerfix = (requestModule: string, tsDefineFilename: string) =>
   `/* eslint-disable */
 import request from "${requestModule}";
@@ -14,8 +21,7 @@ import api from './${tsDefineFilename.replace(".ts", "")}';
 `;
 
 const getLine = (serviceName: string, apiMethods: ApiMethod[]) => {
-  let content = `
-export class ${serviceName}Service {`;
+  let content = `\nexport class ${serviceName}Service {`;
 
   for (const apiMethod of apiMethods) {
     let requestType = `I${apiMethod.requestType}`;
@@ -24,24 +30,16 @@ export class ${serviceName}Service {`;
       requestType = `${apiMethod.namespace}.${requestType}`;
       responseType = `${apiMethod.namespace}.${responseType}`;
     }
-    content += `
-
-  ${apiMethod.comment ? `/** ${apiMethod.comment} */` : "/** no comment **/"}
-  static async ${
-    apiMethod.methodName
-  }(req: api.${requestType}): Promise<api.${responseType}> {
-    return await request.${apiMethod.httpMethod}('${apiMethod.urlPath}', ${
-      apiMethod.httpMethod === "get" ? "{ params: req }" : "req"
-    })
-  };`;
+    content += `\n\n  ${apiMethod.comment ? `/** ${apiMethod.comment} */` : "/** no comment **/"}`;
+    content += `\n  static async ${apiMethod.methodName}(req: api.${requestType}): Promise<api.${responseType}> {`;
+    content += `\n    return await request.${apiMethod.httpMethod}('${apiMethod.urlPath}', ${apiMethod.httpMethod === "get" ? "{ params: req }" : "req"});`;
+    content += `\n  }`;
   }
 
-  content += `
-
-};
-`;
+  content += `\n}\n`;
   return content;
 };
+
 /**
  * 生成前端api请求文件
  * @param {String} pbtsFilePath 生成的d.ts定义文件的路径
@@ -53,7 +51,6 @@ export async function saveApiFile(
   options: IOptions
 ): Promise<ApiMethod[]> {
   const { requestModule, baseUrl } = options;
-  // 获取当前d.ts文件的目录名称和文件名称
   const tsDefineDirname = path.dirname(pbtsFilePath);
   const tsDefineFilename = path.basename(pbtsFilePath);
   let apiline = "";
@@ -71,14 +68,15 @@ export async function saveApiFile(
           serviceName.slice(0, 1).toUpperCase() +
           serviceName.slice(1);
       }
-      mapServiceToMethods.get(serviceName) ||
-        mapServiceToMethods.set(serviceName, []);
-      mapServiceToMethods.get(serviceName)?.push(apiMethod);
     }
+    if (!mapServiceToMethods.has(serviceName)) {
+      mapServiceToMethods.set(serviceName, []);
+    }
+    mapServiceToMethods.get(serviceName)!.push(apiMethod);
   }
 
-  for (const [serviceName, apiMethods] of mapServiceToMethods) {
-    apiline += getLine(serviceName, apiMethods);
+  for (const [serviceName, methods] of mapServiceToMethods) {
+    apiline += getLine(serviceName, methods);
   }
 
   await fs.promises.writeFile(
@@ -95,24 +93,19 @@ export class ApiMethod {
   responseType: string | undefined;
   httpMethod: string | undefined;
   urlPath: string | undefined;
-  noAuth: boolean | undefined;
   namespace: string | undefined;
   comment: string | undefined;
 }
 
 /**
- * 解析api方法列表
- * @param {String} pbtsFilePath 生成的d.ts定义文件的路径
- * @param {Object} options 用户传入的自定义配置选项
+ * 解析proto文件中的所有service method
  */
 async function parseProtoApiMethods(
   protoFilePath: string,
   options: IOptions
-): Promise<ApiMethod[]> { 
-  // 直接读取文件内容（必须手动读）
+): Promise<ApiMethod[]> {
   const protoSource = fs.readFileSync(protoFilePath, "utf8");
 
-  // 解析proto内容,读取注释和自定义option
   const parsed = protobuf.parse(protoSource, {
     keepCase: true,
     preferTrailingComment: true,
@@ -129,21 +122,20 @@ async function parseProtoApiMethods(
   ) {
     for (const nestedObj of Object.values(nested.nested || {})) {
       if (nestedObj instanceof protobuf.Service) {
-        console.log(`Service: ${nestedObj.name}`);
-
         for (const [methodName, method] of Object.entries(nestedObj.methods)) {
-          console.log(`  Method: ${methodName}`);
-          console.log(`  Method comment: ${method.comment || ""}`);
+          const apiMethod = new ApiMethod();
+          apiMethod.serviceName = nestedObj.name;
+          apiMethod.methodName = methodName;
+          apiMethod.requestType = method.requestType;
+          apiMethod.responseType = method.responseType;
+          apiMethod.namespace = namespacePath || undefined;
+          apiMethod.comment = method.comment || "";
 
           if (
             options.protoOptionTagHttpMethod ||
             options.protoOptionTagHttpPath
           ) {
             if (method.options) {
-              for (const [key, value] of Object.entries(method.options)) {
-                console.log(`    Option: ${key} = ${JSON.stringify(value)}`);
-              }
-
               let protoOptionMethod = getProtoOption(
                 method,
                 options.protoOptionTagHttpMethod
@@ -152,44 +144,37 @@ async function parseProtoApiMethods(
                 method,
                 options.protoOptionTagHttpPath
               );
-              if (protoOptionMethod || protoOptionPath) {
-                if (!protoOptionMethod) {
-                  protoOptionMethod = RequestMethods.post;
-                }
-                if (!protoOptionPath) {
-                  protoOptionPath = `/${nestedObj.name}/${methodName}`
-                  if (namespacePath) {
-                    protoOptionPath = `/${namespacePath}/${nestedObj.name}/${methodName}`
-                  }
-                }
-                const apiMethod = new ApiMethod();
-                apiMethods.push(apiMethod);
-                apiMethod.serviceName = nestedObj.name;
-                apiMethod.methodName = methodName;
-                apiMethod.requestType = method.requestType;
-                apiMethod.responseType = method.responseType;
-                apiMethod.namespace = namespacePath || undefined;
-                apiMethod.httpMethod = protoOptionMethod.toLowerCase();
-                apiMethod.urlPath = options.baseUrl + protoOptionPath;
-                apiMethod.comment = method.comment || "";
+
+              if (!protoOptionMethod) {
+                protoOptionMethod = RequestMethods.post;
               }
+              if (!protoOptionPath) {
+                protoOptionPath = `/${nestedObj.name}/${methodName}`;
+                if (namespacePath) {
+                  protoOptionPath = `/${namespacePath}/${nestedObj.name}/${methodName}`;
+                }
+              }
+              apiMethod.httpMethod = protoOptionMethod.toLowerCase();
+              apiMethod.urlPath = joinUrlPath(options.baseUrl, protoOptionPath);
+            } else {
+              // 没有 options 时 fallback 到 post
+              apiMethod.httpMethod = RequestMethods.post;
+              let urlPath = `/${nestedObj.name}/${methodName}`;
+              if (namespacePath) {
+                urlPath = `/${namespacePath}/${nestedObj.name}/${methodName}`;
+              }
+              apiMethod.urlPath = joinUrlPath(options.baseUrl, urlPath);
             }
           } else {
-            const apiMethod = new ApiMethod();
-            apiMethods.push(apiMethod);
-            apiMethod.serviceName = nestedObj.name;
-            apiMethod.methodName = methodName;
-            apiMethod.requestType = method.requestType;
-            apiMethod.responseType = method.responseType;
-            apiMethod.namespace = namespacePath || undefined;
             apiMethod.httpMethod = RequestMethods.post;
-            let urlPath = `/${apiMethod.serviceName}/${methodName}`
-            if (apiMethod.namespace) {
-              urlPath = `/${apiMethod.namespace}/${apiMethod.serviceName}/${methodName}`
+            let urlPath = `/${nestedObj.name}/${methodName}`;
+            if (namespacePath) {
+              urlPath = `/${namespacePath}/${nestedObj.name}/${methodName}`;
             }
-            apiMethod.urlPath = options.baseUrl + urlPath;
-            apiMethod.comment = method.comment || "";
+            apiMethod.urlPath = joinUrlPath(options.baseUrl, urlPath);
           }
+
+          apiMethods.push(apiMethod);
         }
       }
 
